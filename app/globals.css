@@ -1,8 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
+  --background: #11110f;
+  --surface: #191916;
+  --foreground: #f4f0e6;
+  --muted: #c2bdb1;
+  --accent: #d8b66a;
+  --quiet-accent: #9e8757;
+  --line: rgb(244 240 230 / 12%);
 }
 
 @theme inline {
@@ -10,17 +16,110 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-playfair);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  background: var(--background);
 }
 
 body {
-  background: var(--background);
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgb(216 182 106 / 8%), transparent 42rem),
+    var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+::selection {
+  background: var(--accent);
+  color: #17150f;
+}
+
+a {
+  color: inherit;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 5px;
+}
+
+.poster-frame {
+  position: relative;
+  width: min(100%, 25rem);
+  aspect-ratio: 4 / 5;
+  margin-inline: auto;
+  padding: 0.8rem;
+  border: 1px solid rgb(244 240 230 / 16%);
+  background: rgb(255 255 255 / 2%);
+  box-shadow: 0 2rem 5rem rgb(0 0 0 / 35%);
+  transform: rotate(2deg);
+}
+
+.poster-art {
+  position: relative;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  padding: 1.5rem;
+  background:
+    radial-gradient(ellipse at 50% 39%, rgb(216 182 106 / 20%), transparent 25%),
+    linear-gradient(155deg, #392a24 0%, #211b1a 43%, #151513 100%);
+}
+
+.poster-art::before,
+.poster-art::after {
+  position: absolute;
+  right: 1.2rem;
+  left: 1.2rem;
+  height: 0.5rem;
+  content: "";
+  background: radial-gradient(circle, rgb(244 240 230 / 25%) 1.5px, transparent 2px) left center / 1rem 0.5rem repeat-x;
+}
+
+.poster-art::before {
+  top: 1rem;
+}
+
+.poster-art::after {
+  bottom: 1rem;
+}
+
+.poster-sun {
+  position: absolute;
+  top: 23%;
+  left: 50%;
+  width: 42%;
+  aspect-ratio: 1;
+  border: 1px solid rgb(216 182 106 / 58%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 35%, #dbc28f, #a2814d 68%, #715a3b);
+  box-shadow: 0 0 5rem rgb(216 182 106 / 20%);
+  transform: translateX(-50%);
+}
+
+.poster-horizon {
+  position: absolute;
+  right: -10%;
+  bottom: 30%;
+  left: -10%;
+  height: 28%;
+  border-top: 1px solid rgb(244 240 230 / 22%);
+  background: linear-gradient(180deg, rgb(20 19 18 / 15%), #171615 42%);
+  clip-path: polygon(0 60%, 13% 48%, 23% 56%, 37% 20%, 49% 55%, 64% 30%, 75% 52%, 88% 14%, 100% 45%, 100% 100%, 0 100%);
+}
+
+.poster-copy {
+  position: relative;
+  z-index: 1;
 }
