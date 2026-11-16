@@ -71,3 +71,25 @@ alternatively, we could disable JS and reload /movies - if a movie list is visib
 
 perhaps, a statically rendered /movies page would be my preference.
 a weekly catalog wouldn't need fresh data on eeeevery request.... so rebuilding after updates serves fast pages without making each visitor wait for the one-second fetch.
+
+## Lab 3
+
+#### NavLink uses usePathname, a hook that only works in Client Components. Yet the page source of /movies/2 already contains aria-current="true" on the Movies link. How is this possible?
+
+NavLink is a Client Component (CC). NextJS can very well render CCs on the server for the initial page load, and only then hydrate them in the browser. During the render, the path name is /movies/2 indeed, so the link gets the aria current attribute in the HTML sent to the browser. Yes, the hook needs a CC but that doesn't imply that initial render only happens in the browser.
+
+#### Why does generateStaticParams return String(movie.id) and not movie.id? And why does /movies/42 give a 404 in Part C without running the code of the page?
+
+Route params come from URL segments, so the generateStaticParams returns strings. the is is the string and getMovie expects a string, so string(movie.id) gives the generated param the type it expects. while with dynamicParams = false, nextJS wants only IDs listed by the generateStaticParams soo "42" isn't listed and NextJS returns 404.
+
+#### In Part D, why is the note kept between /movies and /movies/2, and lost when you go through /about?
+
+if the layout stays mounted, the note survives navigation. layout.tsx in this case wraps both movies and movies/2, so the page beneath the layout changes but the input and state are preserved.
+
+#### In Part E, step 4, where is the real message of the error, and why does Next.js not send it to the browser?
+
+in prod, nextJS would hide the original error and send a generic one - that's toprevent sensitive data from leaking out.
+
+#### Under npm run dev, "Loading the movies..." appears when you open /movies/2. Under npm start it does not, but it still appears on /movies. Why?
+
+it depends on whether nextJS has to wait for server data. in development, /movies/2 runs the page's data lookup which waits a second. in prod, /movies/2 is pre-rendered from generateStaticParams, so the ready page can be served immediately. while /movies is force-dynamic, so its data lookup runs on each request even under npm start.
